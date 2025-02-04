@@ -3,6 +3,8 @@ using GameStore.API.Dtos;
 var builder = WebApplication.CreateBuilder(args);
 var app = builder.Build();
 
+const string GetGameEndPointName = "GetGameById";
+
 List<GameDto> games = [
   new (1, "The Last of Us Part II", "Action-adventure", 59.99m, new DateOnly(2020, 6, 19)),
   new (2, "Ghost of Tsushima", "Action-adventure", 59.99m, new DateOnly(2020, 7, 17)),
@@ -14,7 +16,13 @@ List<GameDto> games = [
 // GET /games
 app.MapGet("/games", () => games);
 
-app.MapGet("/games/{id}", (int id) => games.Find(game => game.Id == id));
+app.MapGet("/games/{id}", (int id) => games.Find(game => game.Id == id)).WithName(GetGameEndPointName);
+
+app.MapPost("/games", (CreateGameDto newGame) => {
+  GameDto game = new(games.Count + 1, newGame.Name, newGame.Genre, newGame.Price, newGame.ReleaseDate);
+  games.Add(game);
+  return Results.CreatedAtRoute(GetGameEndPointName, new { id = game.Id }, game);
+});
 
 app.MapGet("/", () => "Hello World!");
 
