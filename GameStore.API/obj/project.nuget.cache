@@ -1,8 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "/ghH3RaUF5CUOD+15tLO1C+6pLeIA9Z5zPXxeJwcUj+9STXRydNdWH8BZxAQIJXXvUGHnwwEbUqh5aBLdu8ejg==",
+  "dgSpecHash": "FHxJrDKxHZP+w6QR3vonl3J8xRrolnMpCsSEd30ZtJpwbsnSKQxClAzyhMenmxsOJsWfky4Qya6j9vneHgGS6A==",
   "success": true,
   "projectFilePath": "/Users/yutamabudiman/Developer/Yutama/Learning/Online Resource/fullstack.netcore8/GameStore/GameStore.API/GameStore.API.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "/Users/yutamabudiman/.nuget/packages/microsoft.openapi/1.4.3/microsoft.openapi.1.4.3.nupkg.sha512",
+    "/Users/yutamabudiman/.nuget/packages/minimalapis.extensions/0.11.0/minimalapis.extensions.0.11.0.nupkg.sha512",
+    "/Users/yutamabudiman/.nuget/packages/minivalidation/0.8.0/minivalidation.0.8.0.nupkg.sha512"
+  ],
   "logs": []
 }
