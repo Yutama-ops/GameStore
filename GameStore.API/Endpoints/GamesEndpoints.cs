@@ -1,5 +1,8 @@
 using System;
+using GameStore.API.Data;
 using GameStore.API.Dtos;
+using GameStore.API.Entities;
+using GameStore.API.Mapping;
 
 namespace GameStore.API.Endpoints;
 
@@ -7,7 +10,7 @@ public static class GamesEndpoints
 {
     const string GetGameEndPointName = "GetGameById";
 
-    private static readonly List<GameDto> games =
+    private static readonly List<GameSummaryDto> games =
     [
         new(1, "The Last of Us Part II", "Action-adventure", 59.99m, new DateOnly(2020, 6, 19)),
         new(2, "Ghost of Tsushima", "Action-adventure", 59.99m, new DateOnly(2020, 7, 17)),
@@ -26,17 +29,20 @@ public static class GamesEndpoints
     {
         var group = app.MapGroup("games").WithParameterValidation();
         // GET /games
-        group.MapGet("/", () => games);
+        group.MapGet(
+            "/",
+            (GameStoreContext dbContext) => dbContext.Games.Select(game => game.ToGameSummaryDto())
+        );
 
         // GET /games/{id}
         group
             .MapGet(
                 "/{id}",
-                (int id) =>
+                (int id, GameStoreContext dbContext) =>
                 {
-                    GameDto? game = games.Find(game => game.Id == id);
+                    Game? game = dbContext.Games.Find(id);
 
-                    return game is null ? Results.NotFound() : Results.Ok(game);
+                    return game is null ? Results.NotFound() : Results.Ok(game.ToGameDetailsDto());
                 }
             )
             .WithName(GetGameEndPointName);
@@ -44,39 +50,36 @@ public static class GamesEndpoints
         // POST /games
         group.MapPost(
             "/",
-            (CreateGameDto newGame) =>
+            (CreateGameDto newGame, GameStoreContext dbContext) =>
             {
-                GameDto game = new(
-                    games.Count + 1,
-                    newGame.Name,
-                    newGame.Genre,
-                    newGame.Price,
-                    newGame.ReleaseDate
+                Game game = newGame.ToEntity();
+
+                dbContext.Games.Add(game);
+                dbContext.SaveChanges();
+
+                return Results.CreatedAtRoute(
+                    GetGameEndPointName,
+                    new { id = game.Id },
+                    game.ToGameDetailsDto()
                 );
-                games.Add(game);
-                return Results.CreatedAtRoute(GetGameEndPointName, new { id = game.Id }, game);
             }
         );
 
         // PUT /games/{id}
         group.MapPut(
             "/{id}",
-            (int id, UpdateGameDto updatedGame) =>
+            (int id, UpdateGameDto updatedGame, GameStoreContext dbContext) =>
             {
-                var index = games.FindIndex(game => game.Id == id);
+                var existingGame = dbContext.Games.Find(id);
 
-                if (index == -1)
+                if (existingGame is null)
                 {
                     return Results.NotFound();
                 }
 
-                games[index] = new GameDto(
-                    id,
-                    updatedGame.Name,
-                    updatedGame.Genre,
-                    updatedGame.Price,
-                    updatedGame.ReleaseDate
-                );
+                dbContext.Entry(existingGame).CurrentValues.SetValues(updatedGame.ToEntity(id));
+
+                dbContext.SaveChanges();
 
                 return Results.NoContent();
             }
