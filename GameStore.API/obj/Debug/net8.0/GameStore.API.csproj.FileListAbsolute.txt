@@ -23,3 +23,4 @@
 /Users/yutamabudiman/Developer/Yutama/Learning/Online Resource/fullstack.netcore8/GameStore/GameStore.API/obj/Debug/net8.0/GameStore.API.pdb
 /Users/yutamabudiman/Developer/Yutama/Learning/Online Resource/fullstack.netcore8/GameStore/GameStore.API/obj/Debug/net8.0/GameStore.API.genruntimeconfig.cache
 /Users/yutamabudiman/Developer/Yutama/Learning/Online Resource/fullstack.netcore8/GameStore/GameStore.API/obj/Debug/net8.0/ref/GameStore.API.dll
+/Users/yutamabudiman/Developer/Yutama/Learning/Online Resource/fullstack.netcore8/GameStore/GameStore.API/obj/Debug/net8.0/GameStore.API.sourcelink.json
