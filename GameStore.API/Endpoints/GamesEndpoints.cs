@@ -11,21 +11,6 @@ public static class GamesEndpoints
 {
     const string GetGameEndPointName = "GetGameById";
 
-    private static readonly List<GameSummaryDto> games =
-    [
-        new(1, "The Last of Us Part II", "Action-adventure", 59.99m, new DateOnly(2020, 6, 19)),
-        new(2, "Ghost of Tsushima", "Action-adventure", 59.99m, new DateOnly(2020, 7, 17)),
-        new(3, "Cyberpunk 2077", "Action role-playing", 59.99m, new DateOnly(2020, 12, 10)),
-        new(4, "Demon's Souls", "Action role-playing", 69.99m, new DateOnly(2020, 11, 12)),
-        new(
-            5,
-            "Demon Slayer: Kimetsu no Yaiba – Hinokami Keppūtan",
-            "Fighting",
-            59.99m,
-            new DateOnly(2021, 10, 15)
-        ),
-    ];
-
     public static RouteGroupBuilder MapGamesEndpoints(this WebApplication app)
     {
         var group = app.MapGroup("games").WithParameterValidation();
